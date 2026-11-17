@@ -1,0 +1,30 @@
+// SOC-311: Outlook NTLM hash leak (CVE-2026-124194)
+// Splunk searches used in the investigation
+
+// 1. Who received the phishing email
+index=email sender="invoices@supp1ier-portal.com"
+| table _time sender recipient subject attachment sha256 spf
+
+// 2. Who opened the attachment
+index=windows EventCode=4688 command_line="*Q4_Invoice*"
+| table _time host user parent_process process command_line
+
+// 3. Outbound SMB from the user's computer
+index=windows host=WS-12 EventCode=5156 dest_port=445
+| table _time process src_ip dest_ip dest_port result
+
+// 3b. Confirm in the firewall
+index=firewall dest_ip=198.51.100.23
+| table _time src_ip dest_ip dest_port action
+
+// 4. Was the stolen hash used
+index=windows user=marie.pokorna (EventCode=4624 OR EventCode=4776) auth_package=NTLM
+| table _time host EventCode src_ip workstation logon_type auth_package result
+
+// 5. Any other activity from the attacker IP
+index=* 198.51.100.23
+| stats count by index, host, EventCode
+
+// 6. Hunt: any other computer sending SMB to the internet
+index=firewall dest_port=445 direction=outbound NOT dest_ip=10.*
+| stats count by src_ip, dest_ip, action
