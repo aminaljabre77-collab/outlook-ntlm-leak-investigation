@@ -169,7 +169,7 @@ time,host,EventCode,user,src_ip,dest_ip,dest_port,protocol,direction,logon_type,
 2026-11-09T06:45:15.769548+01:00,DC02,4624,eva.dvorakova,10.0.4.23,,,,,2,Kerberos,,,,,success
 2026-11-09T06:50:31.643329+01:00,DC02,4624,eva.dvorakova,10.0.4.23,,,,,3,Kerberos,,,,,success
 2026-11-09T07:00:50.329889+01:00,WS-05,4688,lucie.mala,,,,,,,,,outlook.exe,explorer.exe,outlook.exe,success
-2026-11-09T07:22:00+01:00,WS-12,4688,marie.pokorna,,,,,,,,,winword.exe,outlook.exe,"winword.exe /n ""Q4_Invoice_Nov.docx""",success
+2026-11-09T07:22:00+01:00,WS-12,4688,marie.pokorna,,,,,,,,,outlook.exe,outlook.exe,"outlook.exe /f ""Q4_Invoice_Nov.msg""",success
 2026-11-09T07:22:05+01:00,WS-12,5156,marie.pokorna,10.0.4.32,198.51.100.23,445,tcp,outbound,,,,outlook.exe,,,allowed
 2026-11-09T07:31:00+01:00,DC01,4776,marie.pokorna,198.51.100.23,,,,,,NTLM,WIN-ATTK01,,,,success
 2026-11-09T07:31:03+01:00,MAIL01,4624,marie.pokorna,198.51.100.23,,,,,3,NTLM,WIN-ATTK01,,,,success

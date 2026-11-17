@@ -2,7 +2,7 @@
 
 A SOC L1 investigation of a phishing attack that used the Outlook zero-day **CVE-2026-124194** to leak a user's NTLM hash, which the attacker then used to log in to the mail server.
 
-The company (Nordwell), users and logs are **simulated**. The investigation steps, searches and response are the same ones a SOC analyst would use in a real case.
+The vulnerability is real (Microsoft November 2026 Patch Tuesday, exploited in the wild, added to CISA KEV). The company (Nordwell), users and logs are **simulated**. The investigation steps, searches and response are the same ones a SOC analyst would use in a real case.
 
 ## Summary
 
@@ -15,14 +15,14 @@ The company (Nordwell), users and logs are **simulated**. The investigation step
 | **Escalated to L2** | Yes |
 | **MITRE ATT&CK** | T1566.001 Spearphishing Attachment · T1187 Forced Authentication · T1550.002 Pass the Hash |
 
-On 9 Nov 2026 a phishing email with a malicious Word file was sent to 6 users. One user opened it. Outlook sent her NTLM hash to an attacker's SMB server on the internet, and 9 minutes later the attacker used that hash to log in to the mail server as her.
+On 9 Nov 2026 a phishing email with a crafted Outlook message file (.msg) attached was sent to 6 users. One user opened it. Outlook sent her NTLM hash to an attacker's SMB server on the internet, and 9 minutes later the attacker used that hash to log in to the mail server as her.
 
 ## Attack timeline (CET)
 
 | Time | Event | Source |
 |---|---|---|
 | 07:10 | Email "Q4 invoice - please review" from `invoices@supp1ier-portal.com` delivered to 6 users, SPF softfail | email logs |
-| 07:22:00 | `marie.pokorna` opens `Q4_Invoice_Nov.docx` on WS-12 (`outlook.exe` → `winword.exe`) | Windows 4688 |
+| 07:22:00 | `marie.pokorna` opens `Q4_Invoice_Nov.msg` on WS-12 in Outlook (`outlook.exe`) | Windows 4688 |
 | 07:22:05 | `outlook.exe` on WS-12 (10.0.4.32) connects to `198.51.100.23:445` (SMB). The firewall **allowed** it, so the NTLM hash leaked | Windows 5156, firewall |
 | 07:31:00 | NTLM authentication for `marie.pokorna` from workstation `WIN-ATTK01` | Windows 4776 (DC01) |
 | 07:31:03 | Successful network logon (type 3, NTLM) to **MAIL01** as `marie.pokorna` from `198.51.100.23` / `WIN-ATTK01` | Windows 4624 |
@@ -43,7 +43,7 @@ index=email sender="invoices@supp1ier-portal.com"
 index=windows EventCode=4688 command_line="*Q4_Invoice*"
 | table _time host user parent_process process command_line
 ```
-Only `marie.pokorna` on WS-12. Word was started by Outlook, so she opened it from the email.
+Only `marie.pokorna` on WS-12. She opened the attached message file in Outlook. In CVE-2026-124194 the Preview Pane is not enough; the file has to be opened.
 
 **3. Did the computer connect anywhere strange after that?**
 ```
@@ -66,7 +66,7 @@ Yes. A successful NTLM logon to MAIL01 from the attacker's IP and workstation `W
 | `198.51.100.23` | IP | Malicious. Rogue SMB server that captures NTLM hashes |
 | `supp1ier-portal.com` | Domain | Registered 2 days before the email, look-alike (typosquatting) |
 | `invoices@supp1ier-portal.com` | Sender | Phishing sender |
-| `9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8` | SHA256 | `Q4_Invoice_Nov.docx`, low detection (new exploit). Low detection does not mean safe |
+| `9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8` | SHA256 | `Q4_Invoice_Nov.msg`, low detection (new exploit). Low detection does not mean safe |
 | `WIN-ATTK01` | Hostname | Attacker workstation, not a company asset |
 
 ## Response actions
@@ -102,7 +102,7 @@ SOC-311 | Outlook NTLM hash leak (CVE-2026-124194)
 Verdict: True Positive | Severity: High | Escalated to L2
 
 Phishing email from invoices@supp1ier-portal.com (SPF softfail) delivered
-to 6 users. marie.pokorna opened Q4_Invoice_Nov.docx on WS-12 at 07:22.
+to 6 users. marie.pokorna opened Q4_Invoice_Nov.msg on WS-12 at 07:22.
 outlook.exe connected to 198.51.100.23:445 (allowed by firewall) and leaked
 her NTLM hash. At 07:31 the attacker used it to log in to MAIL01 (4624,
 type 3, NTLM) from WIN-ATTK01.

@@ -39,9 +39,9 @@ time,sender,recipient,subject,attachment,sha256,spf,verdict
 2026-11-09T06:08:40.931681+01:00,it-helpdesk@nordwell.cz,lucie.mala@nordwell.cz,Planned maintenance on Saturday,,,pass,delivered
 2026-11-09T06:12:29.264658+01:00,orders@alza.cz,veronika.jelinkova@nordwell.cz,Your order has shipped,,,pass,delivered
 2026-11-09T06:25:29.268971+01:00,noreply@zoom.us,lucie.mala@nordwell.cz,Your meeting recording is ready,,,pass,delivered
-2026-11-09T07:10:00+01:00,invoices@supp1ier-portal.com,marie.pokorna@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
-2026-11-09T07:10:07+01:00,invoices@supp1ier-portal.com,ondrej.prochazka@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
-2026-11-09T07:10:14+01:00,invoices@supp1ier-portal.com,lenka.pospisilova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
-2026-11-09T07:10:21+01:00,invoices@supp1ier-portal.com,david.marek@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
-2026-11-09T07:10:28+01:00,invoices@supp1ier-portal.com,katerina.svobodova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
-2026-11-09T07:10:35+01:00,invoices@supp1ier-portal.com,veronika.jelinkova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.docx,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:00+01:00,invoices@supp1ier-portal.com,marie.pokorna@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:07+01:00,invoices@supp1ier-portal.com,ondrej.prochazka@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:14+01:00,invoices@supp1ier-portal.com,lenka.pospisilova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:21+01:00,invoices@supp1ier-portal.com,david.marek@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:28+01:00,invoices@supp1ier-portal.com,katerina.svobodova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
+2026-11-09T07:10:35+01:00,invoices@supp1ier-portal.com,veronika.jelinkova@nordwell.cz,Q4 invoice - please review,Q4_Invoice_Nov.msg,9f2c7e41b8a35d0c6e1f4a27b9d83c5e0a6f1b2c3d4e5f60718293a4b5c6d7e8,softfail,delivered
