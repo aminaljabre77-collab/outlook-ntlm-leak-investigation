@@ -2,7 +2,7 @@
 
 A SOC L1 investigation of a phishing attack that used the Outlook zero-day **CVE-2026-124194** to leak a user's NTLM hash, which the attacker then used to log in to the mail server.
 
-The vulnerability is real (Microsoft November 2026 Patch Tuesday, exploited in the wild, added to CISA KEV). The company (Nordwell), users and logs are **simulated**. The investigation steps, searches and response are the same ones a SOC analyst would use in a real case.
+The vulnerability is real (Microsoft November 2026 Patch Tuesday, exploited in the wild, added to CISA KEV). The company (Nordwell), users and logs are **simulated**. The investigation steps, searches and response are the same ones a SOC analyst would use in a real case. All names, domains and internal IPs are fictional; `198.51.100.0/24` is a documentation IP range.
 
 ## Summary
 
@@ -13,9 +13,9 @@ The vulnerability is real (Microsoft November 2026 Patch Tuesday, exploited in t
 | **Verdict** | True Positive |
 | **Severity** | High |
 | **Escalated to L2** | Yes |
-| **MITRE ATT&CK** | T1566.001 Spearphishing Attachment · T1187 Forced Authentication · T1550.002 Pass the Hash |
+| **MITRE ATT&CK** | T1566.001 Spearphishing Attachment · T1187 Forced Authentication · T1110.002 Password Cracking · T1078 Valid Accounts |
 
-On 9 Nov 2026 a phishing email with a crafted Outlook message file (.msg) attached was sent to 6 users. One user opened it. Outlook sent her NTLM hash to an attacker's SMB server on the internet, and 9 minutes later the attacker used that hash to log in to the mail server as her.
+On 9 Nov 2026 a phishing email with a crafted Outlook message file (.msg) attached was sent to 6 users. One user opened it. Outlook sent her NTLMv2 hash to an attacker's SMB server on the internet. 9 minutes later the attacker logged in to the mail server as her, which means the captured hash was cracked offline (weak password) or relayed.
 
 ## Attack timeline (CET)
 
@@ -79,8 +79,8 @@ Yes. A successful NTLM logon to MAIL01 from the attacker's IP and workstation `W
 ## Root cause and weaknesses
 
 1. **Outbound SMB (port 445) to the internet was allowed.** This is what let the hash leave the network.
-2. **MAIL01 accepted NTLM logons from an external IP.** This is what let the stolen hash work.
-3. **No MFA** on mail access.
+2. **MAIL01 accepted NTLM logons from an external IP.** This is what let the attacker log in with the stolen credentials.
+3. **No MFA** on mail access, and a password weak enough to crack quickly.
 4. **The email gateway delivered mail with SPF softfail** from a domain registered 2 days earlier.
 5. **Outlook was unpatched.** The fix was released on 10 Nov, one day after the attack (zero-day).
 
@@ -89,6 +89,8 @@ Yes. A successful NTLM logon to MAIL01 from the attacker's IP and workstation `W
 - Block outbound TCP 445 to the internet on the firewall
 - Install the CVE-2026-124194 Outlook update on all machines
 - Restrict NTLM and use Kerberos where possible; do not accept NTLM from outside the network
+- Enable SMB signing and Extended Protection for Authentication to stop NTLM relay
+- Enforce a strong password policy so captured hashes cannot be cracked quickly
 - Enforce MFA on email and remote access
 - Quarantine email from newly registered domains and with SPF fail/softfail
 - L2: review Marie's mailbox on MAIL01 (forwarding rules, sent items, downloads)
@@ -104,7 +106,7 @@ Verdict: True Positive | Severity: High | Escalated to L2
 Phishing email from invoices@supp1ier-portal.com (SPF softfail) delivered
 to 6 users. marie.pokorna opened Q4_Invoice_Nov.msg on WS-12 at 07:22.
 outlook.exe connected to 198.51.100.23:445 (allowed by firewall) and leaked
-her NTLM hash. At 07:31 the attacker used it to log in to MAIL01 (4624,
+her NTLMv2 hash. At 07:31 the attacker used it to log in to MAIL01 (4624,
 type 3, NTLM) from WIN-ATTK01.
 Actions: emails purged, IP and domain blocked, password reset.
 L2: check MAIL01 for mailbox access and forwarding rules.
